@@ -1,0 +1,46 @@
+cabal-version:      3.0
+name:               daml-doc-coverage
+version:            0.1.0.0
+synopsis:           Documentation coverage checker for DAML
+description:        Parse DAML documentation in JSON format and check coverage
+homepage:           https://github.com/obsidiansystems/daml-doc-coverage
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Obsidian Systems LLC
+maintainer:         maintainer@obsidian.systems
+copyright:          2024 Obsidian Systems LLC
+category:           Testing
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:
+      Language.DAML.Documentation
+    default-extensions:
+      ImportQualifiedPost
+      FlexibleInstances
+      RankNTypes
+      OverloadedStrings
+      ScopedTypeVariables
+    build-depends:    base
+                    , aeson
+                    , bytestring
+                    , microlens
+                    , microlens-aeson
+                    , text
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable daml-doc-coverage
+    import:           warnings
+    main-is:          Main.hs
+    build-depends:
+          base
+        , daml-doc-coverage
+
+    hs-source-dirs:   src-bin
+    default-language: Haskell2010

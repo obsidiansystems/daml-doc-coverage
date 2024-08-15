@@ -1,6 +1,5 @@
 module Language.DAML.Documentation where
 
-import Control.Monad
 import Data.Aeson
 import Data.Foldable
 import Data.Text (Text)
@@ -44,10 +43,16 @@ data Field = Field
   }
   deriving (Show)
 
+-- | Expects a json document produced by running @daml damlc docs -f json@
 readModulesFromFile :: FilePath -> IO (Either String [Module])
 readModulesFromFile f = do
-  a :: Either String Array <- eitherDecodeFileStrict f
-  return $ join $ fmap (sequence . fmap getModule . toList) a
+  v <- eitherDecodeFileStrict f
+  pure $ getModules =<< v
+
+getModules :: Value -> Either String [Module]
+getModules v = case v ^? _Array of
+  Nothing -> Left "Input JSON should be an array"
+  Just x -> mapM getModule $ toList x
 
 get :: Failing m => Traversal' Value a -> String -> Text -> Value -> m a
 get t input k v = case v ^? key k . t of

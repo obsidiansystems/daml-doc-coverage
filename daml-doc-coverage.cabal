@@ -21,6 +21,7 @@ library
     exposed-modules:
       Language.DAML.Documentation
     default-extensions:
+      DeriveDataTypeable
       ImportQualifiedPost
       FlexibleInstances
       RankNTypes

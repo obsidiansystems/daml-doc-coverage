@@ -1,6 +1,7 @@
 module Language.DAML.Documentation where
 
 import Data.Aeson
+import Data.Data
 import Data.Foldable
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -21,27 +22,27 @@ data Module = Module
   , _module_description :: Maybe Text
   , _module_templates :: [Template]
   }
-  deriving (Show)
+  deriving (Show, Typeable, Data)
 
 data Template = Template
   { _template_name :: Text
   , _template_description :: Maybe Text
   , _template_choices :: [Choice]
   }
-  deriving (Show)
+  deriving (Show, Typeable, Data)
 
 data Choice = Choice
   { _choice_name :: Text
   , _choice_description :: Maybe Text
   , _choice_fields :: [Field]
   }
-  deriving (Show)
+  deriving (Show, Typeable, Data)
 
 data Field = Field
   { _field_name :: Text
   , _field_description :: Maybe Text
   }
-  deriving (Show)
+  deriving (Show, Typeable, Data)
 
 -- | Expects a json document produced by running @daml damlc docs -f json@
 readModulesFromFile :: FilePath -> IO (Either String [Module])
